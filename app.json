@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "Muzhappilangad Beach",
+    "slug": "muzhappilangad-beach",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#020617"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.muzhappilangad.beachapp",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Camera permission is required to scan resident passes and capture incident report photos.",
+        "NSLocationWhenInUseUsageDescription": "Location is required to tag incident reports and trigger emergency SOS alarms.",
+        "NSMicrophoneUsageDescription": "Microphone is required for emergency two-way voice calling with gate security."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#020617"
+      },
+      "package": "com.muzhappilangad.beachapp",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "RECORD_AUDIO",
+        "VIBRATE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Muzhappilangad Beach App to access your camera for verification and incident reporting."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Muzhappilangad Beach App to access your location for emergency dispatch and incident reporting."
+        }
+      ]
+    ]
+  }
+}
