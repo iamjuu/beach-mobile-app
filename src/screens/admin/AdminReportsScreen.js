@@ -27,6 +27,7 @@ import { formatDateTime } from '../../utils/formatters';
 import { triggerSuccessHaptic } from '../../utils/vibrationUtils';
 import StatusBadge from '../../components/common/StatusBadge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import AdminScanFab from '../../components/common/AdminScanFab';
 
 export default function AdminReportsScreen() {
   const [activeTab, setActiveTab] = useState('ALL'); // 'ALL' | 'RESIDENT' | 'PUBLIC'
@@ -221,6 +222,8 @@ export default function AdminReportsScreen() {
           })
         )}
       </ScrollView>
+
+      <AdminScanFab />
     </View>
   );
 }

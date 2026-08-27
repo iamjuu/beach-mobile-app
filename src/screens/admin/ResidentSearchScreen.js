@@ -22,6 +22,7 @@ import * as adminApi from '../../api/adminApi';
 import { colors } from '../../theme/colors';
 import { triggerSuccessHaptic } from '../../utils/vibrationUtils';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import AdminScanFab from '../../components/common/AdminScanFab';
 
 export default function ResidentSearchScreen() {
   const [query, setQuery] = useState('');
@@ -154,6 +155,8 @@ export default function ResidentSearchScreen() {
           })
         )}
       </ScrollView>
+
+      <AdminScanFab />
     </View>
   );
 }

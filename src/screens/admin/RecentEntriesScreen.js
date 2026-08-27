@@ -12,6 +12,7 @@ import * as adminApi from '../../api/adminApi';
 import { colors } from '../../theme/colors';
 import { formatDateTime } from '../../utils/formatters';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import AdminScanFab from '../../components/common/AdminScanFab';
 
 export default function RecentEntriesScreen() {
   const [entries, setEntries] = useState([]);
@@ -118,6 +119,8 @@ export default function RecentEntriesScreen() {
           })
         )}
       </ScrollView>
+
+      <AdminScanFab />
     </View>
   );
 }

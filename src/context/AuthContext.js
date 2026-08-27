@@ -5,6 +5,7 @@ import * as publicApi from '../api/publicApi';
 import api from '../api/axios';
 
 const AuthContext = createContext(null);
+const SESSION_DURATION = 15 * 60 * 60 * 1000; // 15 hours in milliseconds
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -15,13 +16,41 @@ export function AuthProvider({ children }) {
     loadStoredSession();
   }, []);
 
+  useEffect(() => {
+    if (!token || !user) return;
+    let timer;
+    const checkExpiry = async () => {
+      const storedTime = await AsyncStorage.getItem('beach_app_token_time');
+      if (!storedTime) return;
+      const elapsed = Date.now() - parseInt(storedTime, 10);
+      const remaining = Math.max(0, SESSION_DURATION - elapsed);
+      if (remaining <= 0) {
+        await logout();
+      } else {
+        timer = setTimeout(async () => {
+          await logout();
+        }, remaining);
+      }
+    };
+    checkExpiry();
+    return () => clearTimeout(timer);
+  }, [token, user]);
+
   const loadStoredSession = async () => {
     try {
       setLoading(true);
       const storedToken = await AsyncStorage.getItem('beach_app_token');
+      const storedTime = await AsyncStorage.getItem('beach_app_token_time');
       const storedUser = await AsyncStorage.getItem('beach_app_user');
 
       if (storedToken && storedUser) {
+        if (storedTime) {
+          const elapsed = Date.now() - parseInt(storedTime, 10);
+          if (elapsed >= SESSION_DURATION) {
+            await logout();
+            return;
+          }
+        }
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
         api.defaults.headers.common.Authorization = `Bearer ${storedToken}`;

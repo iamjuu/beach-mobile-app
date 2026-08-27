@@ -14,6 +14,7 @@ const Tab = createBottomTabNavigator();
 export default function AdminTabNavigator() {
   return (
     <Tab.Navigator
+      initialRouteName="AdminSearch"
       screenOptions={{
         headerShown: false,
         tabBarStyle: {

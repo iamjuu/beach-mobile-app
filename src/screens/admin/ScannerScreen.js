@@ -28,7 +28,7 @@ import { playConfirmationChime } from '../../utils/soundUtils';
 import StatusBadge from '../../components/common/StatusBadge';
 import AdminPendingVisitorAlert from '../../components/notifications/AdminPendingVisitorAlert';
 
-export default function ScannerScreen() {
+export default function ScannerScreen({ navigation }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState('back');
   const [torch, setTorch] = useState(false);
@@ -68,6 +68,7 @@ export default function ScannerScreen() {
   const handleDismissResult = () => {
     setScanResult(null);
     setScanned(false);
+    navigation?.navigate('AdminSearch');
   };
 
   if (!permission) {

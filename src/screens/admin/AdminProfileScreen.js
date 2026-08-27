@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -15,12 +15,30 @@ import {
   Clock,
   Phone,
   Award,
+  Globe,
 } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
+import { changeLanguage } from '../../i18n/i18n';
 import { colors } from '../../theme/colors';
+import AdminScanFab from '../../components/common/AdminScanFab';
+
+const LANGUAGES = [
+  { code: 'en', label: 'English', native: 'English' },
+  { code: 'ml', label: 'Malayalam', native: 'മലയാളം' },
+  { code: 'hi', label: 'Hindi', native: 'हिंदी' },
+];
 
 export default function AdminProfileScreen() {
+  const { i18n, t } = useTranslation();
   const { user, logout } = useAuth();
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'en');
+
+  const handleLanguageChange = async (langCode) => {
+    await changeLanguage(langCode);
+    setCurrentLang(langCode);
+    Alert.alert('Language Updated', `App language set to ${LANGUAGES.find((l) => l.code === langCode)?.label}`);
+  };
 
   const handleLogout = () => {
     Alert.alert('Sign Out', 'Are you sure you want to end your security shift and log out?', [
@@ -42,6 +60,29 @@ export default function AdminProfileScreen() {
             <View style={styles.rolePill}>
               <Text style={styles.roleText}>GATE SECURITY ADMIN</Text>
             </View>
+          </View>
+        </View>
+
+        {/* Language Preference Card */}
+        <View style={styles.card}>
+          <View style={styles.langHeaderRow}>
+            <Globe size={18} color={colors.primaryLight} />
+            <Text style={styles.cardHeader}>APP LANGUAGE PREFERENCE</Text>
+          </View>
+          <View style={styles.langOptionsRow}>
+            {LANGUAGES.map((l) => {
+              const active = currentLang.startsWith(l.code);
+              return (
+                <TouchableOpacity
+                  key={l.code}
+                  style={[styles.langBtn, active && styles.langBtnActive]}
+                  onPress={() => handleLanguageChange(l.code)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.langText, active && styles.langTextActive]}>{l.native}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
 
@@ -88,6 +129,8 @@ export default function AdminProfileScreen() {
           <Text style={styles.logoutText}>End Shift & Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <AdminScanFab />
     </View>
   );
 }
@@ -153,6 +196,38 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     letterSpacing: 1,
     marginBottom: 14,
+  },
+  langHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
+  langOptionsRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  langBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: colors.cardSecondary,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  langBtnActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primaryLight,
+  },
+  langText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.textSecondary,
+  },
+  langTextActive: {
+    color: '#ffffff',
   },
   infoRow: {
     flexDirection: 'row',
